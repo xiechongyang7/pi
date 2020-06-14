@@ -1,0 +1,24 @@
+server:
+  port: 8888
+job:
+  notice:
+    cron: 0 0/30 * * * ?
+file:
+  path:
+    log:
+      web: /home/pi/log/web.log
+      ssh: /home/pi/log/ssh.log
+spring:
+  mail:
+    host: imap.qq.com
+    username: 791465939@qq.com
+    password: euoccddhkarsbegf
+#    password: xie83292070
+    properties:
+      from: 791465939@qq.com
+
+
+
+
+#job.log.cron=0 0/30 * * * ?
+#file.path.log,info=
