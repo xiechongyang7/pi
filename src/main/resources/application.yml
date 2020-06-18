@@ -17,7 +17,10 @@ spring:
     properties:
       from: 791465939@qq.com
 
-
+target:
+  mail: xiechongyang7@163.com
+shell:
+  path:
 
 
 #job.log.cron=0 0/30 * * * ?
