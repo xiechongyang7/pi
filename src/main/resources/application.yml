@@ -20,7 +20,7 @@ spring:
 target:
   mail: xiechongyang7@163.com
 shell:
-  path:
+  path: ng.sh
 
 
 #job.log.cron=0 0/30 * * * ?

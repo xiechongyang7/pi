@@ -21,30 +21,24 @@ import java.util.List;
 * @author xie
 */
 @Component
-public class NoticeJob extends BaseJob {
+public class NoticeSshJob extends BaseJob {
 
 
     @Autowired
     private MailService mailService;
 
-    @Value("${file.path.log.web}")
-    private String webLogFilePath;
+    @Value("${file.path.log.ssh}")
+    private String sshLogFilePath;
 
-    @Value("shell.path")
-    private String shellPath;
-
-    @Value("nginx.config.path")
-    private String nginxConfigPath;
 
     @Override
     @Scheduled(cron = "${job.log.cron}")
     public void doTask() {
 
         try {
-
-            check(webLogFilePath,"WEB");
-//            check(sshLogFilePath,"SSH");
-
+            logger.info("SSH日志文件检测开始");
+            check(sshLogFilePath,"SSH");
+            logger.info("SSH日志文件检测结束");
         } catch (Exception e) {
             logger.error("隧道日志文件处理错误",e);
         }
@@ -54,9 +48,8 @@ public class NoticeJob extends BaseJob {
 
     private void check(String path,String type) throws IOException {
         StringBuilder builder = new StringBuilder();
-        File webLogfile = new File(path);
-        List<String> logStrList = FileUtils.readLines(webLogfile);
-
+        File sshLogfile = new File(path);
+        List<String> logStrList = FileUtils.readLines(sshLogfile);
 
         if(null != logStrList && logStrList.size() != 0){
             for(String str : logStrList){
@@ -69,36 +62,13 @@ public class NoticeJob extends BaseJob {
             // 发送邮件
             mailService.sendMail(builder.toString(),type);
             // 清空文件
-            FileUtils.writeStringToFile(webLogfile,"",false);
-            upNgFile(builder.toString());
-
-            // 执行shell 命令
-            ShellUtil.runShell(shellPath);
+            FileUtils.writeStringToFile(sshLogfile,"",false);
         }
     }
 
 
 
-    private void upNgFile(String str){
-        String[] strs = str.split(" ");
-        String address = strs[strs.length-1];
-        File nginxConfigFile = new File(nginxConfigPath);
 
-        try {
-            List<String> configStr = FileUtils.readLines(nginxConfigFile);
-            StringBuilder builder = new StringBuilder();
-            for(int i = 0;i < configStr.size();i++){
-                if(i == 6){
-                    builder.append("          index "+address+";");
-                }else {
-                    builder.append(configStr.get(i));
-                }
-            }
-            FileUtils.writeStringToFile(nginxConfigFile,builder.toString(),false);
-        } catch (IOException e) {
-            logger.error("操作nginx配置文件出错",e);
-        }
-    }
 
 
 }

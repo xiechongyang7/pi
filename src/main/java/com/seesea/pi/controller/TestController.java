@@ -2,7 +2,7 @@ package com.seesea.pi.controller;
 
 
 import com.seesea.pi.base.BaseController;
-import com.seesea.pi.task.NoticeJob;
+import com.seesea.pi.task.NoticeWebJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController extends BaseController {
 
     @Autowired
-    private NoticeJob noticeJob;
+    private NoticeWebJob noticeJob;
 
     @GetMapping("/test")
     public String test(){
