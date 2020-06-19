@@ -18,7 +18,7 @@ public class ShellUtil {
     public static void runShell(String shellPath) {
 
 
-        String cmd = "./"+shellPath;
+        String cmd = "sh "+shellPath;
 
         logger.info("开始执行脚本:" + cmd);
         Process process = null;

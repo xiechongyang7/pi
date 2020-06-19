@@ -2,7 +2,7 @@ server:
   port: 8888
 job:
   notice:
-    cron: 0 0/30 * * * ?
+    cron: 0 0/5 * * * ?
 file:
   path:
     log:
@@ -20,8 +20,9 @@ spring:
 target:
   mail: xiechongyang7@163.com
 shell:
-  path: ng.sh
-
-
+  path: /home/pi/pi/ng.sh
+nginx:
+  config:
+    path: /etc/nginx/conf.d/server.conf
 #job.log.cron=0 0/30 * * * ?
 #file.path.log,info=

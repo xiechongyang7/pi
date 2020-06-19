@@ -20,10 +20,10 @@ import java.util.Date;
 @Service
 public class MailServiceImpl extends BaseService implements MailService {
 
-    @Value("spring.mail.username")
+    @Value("${spring.mail.username}")
     private String mailUsername;
 
-    @Value("target.mail")
+    @Value("${target.mail}")
     private String targetMail;
 
 

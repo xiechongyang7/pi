@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,11 +33,11 @@ public class NoticeSshJob extends BaseJob {
 
 
     @Override
-    @Scheduled(cron = "${job.log.cron}")
+    @Scheduled(cron = "${job.notice.cron}")
     public void doTask() {
 
         try {
-            logger.info("SSH日志文件检测开始");
+            logger.info("SSH日志文件检测开始" + new Date());
             check(sshLogFilePath,"SSH");
             logger.info("SSH日志文件检测结束");
         } catch (Exception e) {
@@ -51,7 +52,7 @@ public class NoticeSshJob extends BaseJob {
         File sshLogfile = new File(path);
         List<String> logStrList = FileUtils.readLines(sshLogfile);
 
-        if(null != logStrList && logStrList.size() != 0){
+        if(null != logStrList && logStrList.size() != 0  && sshLogfile.length()> 10){
             for(String str : logStrList){
                 if(str.contains("Tunnel established")){
                     //e.g. [06/11/20 15:17:20] [INFO] [client] Tunnel established at http://kwrs4y.natappfree.cc
