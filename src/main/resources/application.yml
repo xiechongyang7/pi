@@ -2,7 +2,7 @@ server:
   port: 8888
 job:
   notice:
-    cron: 0 0/5 * * * ?
+    cron: 0 0/30 * * * ?
 file:
   path:
     log:
