@@ -33,8 +33,8 @@ public class NoticeSshJob extends BaseJob {
 
 
     @Override
-    @Scheduled(cron = "${job.notice.cron}")
-    public void doTask() {
+    @Scheduled(cron = "${job.notice.cron.ssh}")
+    public void doTask() throws IOException {
 
         try {
             logger.info("SSH日志文件检测开始" + new Date());
@@ -42,6 +42,7 @@ public class NoticeSshJob extends BaseJob {
             logger.info("SSH日志文件检测结束");
         } catch (Exception e) {
             logger.error("隧道日志文件处理错误",e);
+            throw e;
         }
 
     }
@@ -52,18 +53,19 @@ public class NoticeSshJob extends BaseJob {
         File sshLogfile = new File(path);
         List<String> logStrList = FileUtils.readLines(sshLogfile);
 
-        if(null != logStrList && logStrList.size() != 0  && sshLogfile.length()> 10){
+        if(logStrList.size() != 0  && sshLogfile.length()> 10){
             for(String str : logStrList){
                 if(str.contains("Tunnel established")){
                     //e.g. [06/11/20 15:17:20] [INFO] [client] Tunnel established at http://kwrs4y.natappfree.cc
                     builder.append(str).append("\n");
                 }
             }
-
-            // 发送邮件
-            mailService.sendMail(builder.toString(),type);
-            // 清空文件
-            FileUtils.writeStringToFile(sshLogfile,"",false);
+            if (!"".equals((builder+"").replace(" ",""))){
+                // 发送邮件
+                mailService.sendMail(builder.toString(),type);
+                // 清空文件
+                FileUtils.writeStringToFile(sshLogfile,"",false);
+            }
         }
     }
 

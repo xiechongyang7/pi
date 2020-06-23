@@ -2,7 +2,9 @@ server:
   port: 8888
 job:
   notice:
-    cron: 0 0/30 * * * ?
+    cron:
+      web: 0 0/30 * * * ?
+      ssh: 0 0/30 * * * ?
 file:
   path:
     log:
@@ -16,7 +18,13 @@ spring:
 #    password: xie83292070
     properties:
       from: 791465939@qq.com
-
+  thymeleaf:
+    cache: false
+    enabled: true
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    mode: HTML
+    suffix: .html
 target:
   mail: xiechongyang7@163.com
 shell:

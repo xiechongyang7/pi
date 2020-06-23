@@ -39,8 +39,8 @@ public class NoticeWebJob extends BaseJob {
     private String nginxConfigPath;
 
     @Override
-    @Scheduled(cron = "${job.notice.cron}")
-    public void doTask() {
+    @Scheduled(cron = "${job.notice.cron.web}")
+    public void doTask() throws IOException, BizException {
 
         try {
             logger.info("WEB日志文件检测开始"  + new Date());
@@ -48,6 +48,7 @@ public class NoticeWebJob extends BaseJob {
             logger.info("WEB日志文件检测结束");
         } catch (Exception e) {
             logger.error("隧道日志文件处理错误",e);
+            throw e;
         }
 
     }
@@ -59,7 +60,7 @@ public class NoticeWebJob extends BaseJob {
         List<String> logStrList = FileUtils.readLines(webLogfile);
 
 
-        if(null != logStrList && logStrList.size() != 0 && webLogfile.length()> 10){
+        if(logStrList.size() > 0 && webLogfile.length()> 10){
             for(String str : logStrList){
                 if(str.contains("Tunnel established")){
                     //e.g. [06/11/20 15:17:20] [INFO] [client] Tunnel established at http://kwrs4y.natappfree.cc
@@ -67,20 +68,22 @@ public class NoticeWebJob extends BaseJob {
                 }
             }
 
-            // 发送邮件
-            logger.info("WEB地址变更为:{}",builder);
-            logger.info("===发送邮件开始===");
-            mailService.sendMail(builder.toString(),type);
-            logger.info("===发送邮件结束===");
-            // 清空文件
-            FileUtils.writeStringToFile(webLogfile,"",false);
-            logger.info("===修改文件开始===");
-            upNgFile(builder.toString());
-            logger.info("===修改文件结束===");
-            // 执行shell 命令
-            logger.info("===执行脚本开始===");
-            ShellUtil.runShell(shellPath);
-            logger.info("===执行脚本结束===");
+            if (!"".equals((builder+"").replace(" ",""))){
+                // 发送邮件
+                logger.info("WEB地址变更为:{}",builder);
+                logger.info("===发送邮件开始===");
+                mailService.sendMail(builder.toString(),type);
+                logger.info("===发送邮件结束===");
+                // 清空文件
+                FileUtils.writeStringToFile(webLogfile,"",false);
+                logger.info("===修改文件开始===");
+                upNgFile(builder.toString());
+                logger.info("===修改文件结束===");
+                // 执行shell 命令
+                logger.info("===执行脚本开始===");
+                ShellUtil.runShell(shellPath);
+                logger.info("===执行脚本结束===");
+            }
         }
     }
 
