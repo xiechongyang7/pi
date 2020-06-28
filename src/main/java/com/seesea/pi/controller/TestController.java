@@ -33,10 +33,10 @@ public class TestController extends BaseController {
     @RequestMapping("/index")
     public String getIndex(HttpServletRequest request){
 //        request.setAttribute("result","success");
-        return "/index.html";
+        return "index.html";
     }
 
-    @RequestMapping("/web/task")
+    @RequestMapping("/index/web/task")
     public String webTask(HttpServletRequest request){
         try {
             noticeWebJob.doTask();
@@ -44,10 +44,10 @@ public class TestController extends BaseController {
         }catch (Exception e){
             request.setAttribute("result",e.getMessage());
         }
-        return "/index.html";
+        return "index.html";
     }
 
-    @RequestMapping("/ssh/task")
+    @RequestMapping("/index/ssh/task")
     public String sshTask(HttpServletRequest request){
 
         try {
@@ -56,11 +56,10 @@ public class TestController extends BaseController {
         }catch (Exception e){
             request.setAttribute("result",e.getMessage());
         }
-
-        return "/index.html";
+        return "index";
     }
 
-    @RequestMapping("/ssh/change")
+    @RequestMapping("/index/ssh/change")
     public String changeSsh(HttpServletRequest request){
 
         try{
@@ -70,11 +69,10 @@ public class TestController extends BaseController {
             request.setAttribute("result",e.getMessage());
 
         }
-
-        return "/index.html";
+        return "index.html";
     }
 
-    @RequestMapping("/sql/change")
+    @RequestMapping("/index/sql/change")
     public String changeChange(HttpServletRequest request){
 
         try{
@@ -84,8 +82,7 @@ public class TestController extends BaseController {
             request.setAttribute("result",e.getMessage());
 
         }
-
-        return "/index.html";
+        return "index.html";
     }
 }
 

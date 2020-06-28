@@ -32,5 +32,6 @@ shell:
 nginx:
   config:
     path: /etc/nginx/conf.d/server.conf
+    root:
 #job.log.cron=0 0/30 * * * ?
 #file.path.log,info=
