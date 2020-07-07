@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class ChangeServiceImpl extends BaseService implements ChangeService {
 
-    @Value("${nginx.config.path.root}")
+    @Value("${nginx.config.link}")
     private String path;
     @Value("${shell.path}")
     private String shellPath;
@@ -36,20 +36,20 @@ public class ChangeServiceImpl extends BaseService implements ChangeService {
 
             if(Const.change_tpye_sql.equals(type)){
                 for(String str:logStrList){
-                    if(str.contains("sql")){
+                    if(str.contains(":22")){
                         str = "#" + str;
                     }
-                    if(str.contains("ssh")){
+                    if(str.contains(":3306")){
                         str = str.replaceAll("#","");
                     }
                     builder.append(str).append("\n");
                 }
             }else {
                 for(String str:logStrList){
-                    if(str.contains("sql")){
+                    if(str.contains(":22")){
                         str = str.replaceAll("#","");
                     }
-                    if(str.contains("ssh")){
+                    if(str.contains(":3306")){
                         str = "#" + str;
                     }
                     builder.append(str).append("\n");
